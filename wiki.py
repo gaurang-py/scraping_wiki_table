@@ -1,11 +1,12 @@
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
-page = requests.get("https://en.wikipedia.org/wiki/List_of_cryptocurrencies")
+wiki_link = "https://en.wikipedia.org/wiki/List_of_cryptocurrencies"
+page = requests.get(wiki_link)
 table_class = "wikitable sortable jquery-tablesorter"
 soup = BeautifulSoup(page.text, 'html.parser')
-table=soup.find('table',{'class':'wikitable'})
-df=pd.read_html(str(table))
-df=pd.DataFrame(df[0])
-print(df)
+all_tables = soup.find_all('table')
+print(str(all_tables).encode('utf8'))
+df=pd.read_html(str(all_tables))
 df.to_csv("SCRAPED.csv")
+print(df)
